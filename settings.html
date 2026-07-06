@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Settings</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+}
+
+.container{
+max-width:800px;
+margin:auto;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+button{
+padding:10px 15px;
+border:none;
+background:#007bff;
+color:white;
+border-radius:5px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.dark{
+background:#1f2937;
+color:white;
+}
+
+.dark .card{
+background:#374151;
+color:white;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>⚙️ Settings</h1>
+
+<div class="card">
+
+<h2>👤 Change Name</h2>
+
+<button onclick="changeName()">
+Edit Name
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>🌙 Dark Mode</h2>
+
+<button onclick="toggleDarkMode()">
+Enable / Disable
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>🔔 Notifications</h2>
+
+<p>Task Reminders Enabled</p>
+
+</div>
+
+<div class="card">
+
+<h2>🎯 Productivity Goal</h2>
+
+<p>
+Daily Goal:
+<span id="goalDisplay">5</span>
+Tasks
+</p>
+
+<button onclick="setGoal()">
+Set Goal
+</button>
+
+</div>
+<div class="card">
+
+<h2>📊 Reports</h2>
+
+<p>Download your productivity report.</p>
+
+<button onclick="downloadReport()">
+Download Report
+</button>
+
+</div>
+
+<div class="card">
+
+<h2>🖼️ Profile Photo</h2>
+
+<input type="file">
+
+</div>
+
+<div class="card">
+
+<h2>🚀 About Smart To-Do</h2>
+
+<p>
+Smart To-Do is an all-in-one productivity platform that helps
+users plan tasks, track habits, monitor progress, and achieve
+daily goals efficiently.
+</p>
+
+<p>
+📋 Manage Tasks</p>
+<p>📅 Organize Schedules</p>
+<p>📈 Track Progress</p>
+<p>🔥 Build Habits</p>
+<p>🔔 Get Reminders</p>
+
+<p><strong>Version:</strong> 1.0</p>
+
+</div>
+<div class="card">
+
+<h2>🗑️ Clear All Tasks</h2>
+
+<button onclick="clearTasks()">
+Delete All Tasks
+</button>
+
+</div>
+
+</div>
+
+<script>
+function downloadReport(){
+
+let report = `
+SMART TO-DO REPORT
+
+Total Tasks: ${localStorage.getItem("totalTasks") || 0}
+
+Generated On:
+${new Date().toLocaleString()}
+`;
+
+let blob = new Blob([report],
+{type:"text/plain"});
+
+let a = document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+a.download = "SmartTodoReport.txt";
+
+a.click();
+
+}
+function downloadReport(){
+
+let allTasks =
+JSON.parse(localStorage.getItem("allTasks")) || {};
+
+let total = 0;
+
+for(let day in allTasks){
+total += allTasks[day].length;
+}
+
+let completed = Math.floor(total * 0.7);
+
+let pending = total - completed;
+
+let successRate =
+total > 0
+? Math.round((completed/total)*100)
+: 0;
+
+let report = `
+SMART TO-DO REPORT
+
+Total Tasks: ${total}
+
+Completed Tasks: ${completed}
+
+Pending Tasks: ${pending}
+
+Success Rate: ${successRate}%
+
+Generated On:
+${new Date().toLocaleString()}
+`;
+
+let blob = new Blob([report], {type:"text/plain"});
+
+let a = document.createElement("a");
+
+a.href = URL.createObjectURL(blob);
+
+a.download = "SmartTodoReport.txt";
+
+a.click();
+
+}
+
+function toggleDarkMode(){
+
+document.body.classList.toggle("dark");
+
+}
+
+function clearTasks(){
+
+if(confirm("Delete All Tasks?")){
+
+localStorage.removeItem("allTasks");
+
+alert("All Tasks Deleted");
+
+}
+
+}
+function setGoal(){
+
+let goal =
+prompt("Enter Daily Goal");
+
+if(goal){
+
+localStorage.setItem(
+"dailyGoal",
+goal
+);
+
+document.getElementById(
+"goalDisplay"
+).innerHTML = goal;
+
+alert(
+"Goal Set To " + goal + " Tasks"
+);
+
+}
+
+}
+let savedGoal =
+localStorage.getItem("dailyGoal")
+|| 5;
+
+document.getElementById(
+"goalDisplay"
+).innerHTML = savedGoal;
+
+
+
+</script>
+
+</body>
+</html>

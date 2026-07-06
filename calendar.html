@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Calendar</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding-bottom:80px;
+}
+
+.header{
+background:white;
+padding:20px;
+text-align:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.calendar{
+max-width:900px;
+margin:30px auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+overflow:hidden;
+}
+
+.month-title{
+
+text-align:center;
+margin-bottom:20px;
+
+}
+
+.days{
+
+display:grid;
+grid-template-columns:repeat(7,1fr);
+gap:10px;
+text-align:center;
+
+}
+
+.day-name{
+
+font-weight:bold;
+padding:10px;
+
+}
+
+.date{
+
+padding:20px;
+background:#f4f4f4;
+border-radius:10px;
+cursor:pointer;
+transition:0.3s;
+
+}
+
+.date:hover{
+
+background:#007bff;
+color:white;
+
+}
+
+.today{
+
+background:#007bff;
+color:white;
+
+}
+
+.bottom-nav{
+
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:15px;
+box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+
+}
+
+.bottom-nav a{
+
+text-decoration:none;
+color:black;
+font-weight:bold;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>📅 Calendar</h1>
+
+<h3 id="todayDate"></h3>
+
+</div>
+
+<div class="calendar">
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+
+<button onclick="changeMonth(-1)">
+◀
+</button>
+
+<h2 class="month-title" id="monthYear"></h2>
+
+<button onclick="changeMonth(1)">
+▶
+</button>
+
+</div>
+
+<div class="days">
+
+<div class="day-name">Sun</div>
+<div class="day-name">Mon</div>
+<div class="day-name">Tue</div>
+<div class="day-name">Wed</div>
+<div class="day-name">Thu</div>
+<div class="day-name">Fri</div>
+<div class="day-name">Sat</div>
+
+</div>
+
+<div class="days" id="calendarDays">
+
+</div>
+<div id="selectedDateTask"
+style="
+margin-top:20px;
+padding:20px;
+background:#f4f4f4;
+border-radius:10px;
+">
+
+<h3>Select a date</h3>
+
+<p>No tasks selected</p>
+
+</div>
+
+</div>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">🏠 Dashboard</a>
+
+<a href="tasks.html">📋 Tasks</a>
+
+<a href="calendar.html">📅 Calendar</a>
+
+<a href="profile.html">👤 Profile</a>
+
+</div>
+
+<script>
+
+let currentDate = new Date();
+
+document.getElementById("todayDate")
+.innerHTML =
+new Date().toDateString();
+
+function renderCalendar(){
+
+const container =
+document.getElementById("calendarDays");
+
+container.innerHTML = "";
+
+const monthNames = [
+
+"January","February","March",
+"April","May","June",
+"July","August","September",
+"October","November","December"
+
+];
+
+document.getElementById("monthYear")
+.innerHTML =
+monthNames[currentDate.getMonth()] +
+" " +
+currentDate.getFullYear();
+
+const year =
+currentDate.getFullYear();
+
+const month =
+currentDate.getMonth();
+
+const firstDay =
+new Date(year,month,1).getDay();
+
+const daysInMonth =
+new Date(year,month+1,0).getDate();
+
+for(let i=0;i<firstDay;i++){
+
+container.innerHTML += "<div></div>";
+
+}
+
+for(let i=1;i<=daysInMonth;i++){
+
+const day =
+document.createElement("div");
+
+day.classList.add("date");
+
+const todayNow = new Date();
+
+if(
+i === todayNow.getDate() &&
+month === todayNow.getMonth() &&
+year === todayNow.getFullYear()
+){
+
+day.classList.add("today");
+
+}
+
+day.innerHTML = i;
+
+day.onclick = function(){
+
+const dateTasks = {
+
+1:["📘 Study Python"],
+2:["☁️ Cloud Computing"],
+3:["💻 Project Work"],
+4:["🏃 Exercise"],
+5:["📚 Java Practice"],
+
+6:["🎤 Communication Practice"],
+7:["🌐 Learn HTML"],
+8:["🎨 Learn CSS"],
+9:["⚡ JavaScript"],
+10:["📖 Reading"],
+
+11:["💻 Coding"],
+12:["☁️ AWS Learning"],
+13:["🏃 Exercise"],
+14:["📚 Revision"],
+15:["📘 Study Python"],
+
+16:["💻 Mini Project"],
+17:["🎤 Communication"],
+18:["🏃 Exercise"],
+19:["📖 Reading"],
+20:["🌐 HTML Practice"],
+
+21:["🎨 CSS Practice"],
+22:["⚡ JavaScript"],
+23:["💻 Project Work"],
+24:["📚 Java Practice"],
+25:["🎤 Communication"],
+
+26:["☁️ Cloud Study"],
+27:["🏃 Walking"],
+28:["📘 Python"],
+29:["💻 Coding"],
+30:["📖 Revision"]
+
+};
+
+let taskHTML = "";
+
+if(dateTasks[i]){
+
+dateTasks[i].forEach(task => {
+
+taskHTML += `<p>${task}</p>`;
+
+});
+
+}else{
+
+taskHTML = "<p>No Tasks Available</p>";
+
+}
+
+document.getElementById("selectedDateTask").innerHTML = `
+
+
+<h3>📅 ${i} ${monthNames[month]} ${year}</h3>
+
+${taskHTML}
+
+`;
+
+};
+container.appendChild(day);
+
+}
+
+}
+
+function changeMonth(value){
+
+currentDate.setMonth(
+currentDate.getMonth()+value
+);
+
+renderCalendar();
+
+}
+
+renderCalendar();
+</script>
+</body>
+
+</html>
+

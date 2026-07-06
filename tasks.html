@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+<title>Tasks Page</title>
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+}
+
+h1{
+text-align:center;
+}
+
+.task-box{
+background:white;
+padding:15px;
+margin:10px 0;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+display:flex;
+justify-content:space-between;
+}
+
+button{
+padding:8px 12px;
+border:none;
+background:#007bff;
+color:white;
+border-radius:5px;
+cursor:pointer;
+}
+
+.nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:15px;
+box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.nav a{
+text-decoration:none;
+font-weight:bold;
+}
+.nav a{
+text-decoration:none;
+font-weight:bold;
+}
+
+/* PASTE BELOW THIS LINE */
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+#currentTime{
+color:#007bff;
+font-weight:bold;
+}
+
+.week-calendar{
+display:flex;
+justify-content:space-around;
+background:white;
+padding:15px;
+border-radius:15px;
+margin-bottom:20px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.day{
+padding:10px 15px;
+border-radius:10px;
+cursor:pointer;
+}
+
+.active-day{
+background:#007bff;
+color:white;
+}
+.time-slot{
+display:flex;
+align-items:center;
+margin:15px 30px;
+}
+
+.time{
+width:100px;
+font-weight:bold;
+}
+
+.task-card{
+background:white;
+padding:15px;
+border-radius:12px;
+flex:1;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+.planner-item{
+display:flex;
+align-items:center;
+background:white;
+margin:20px 0;
+padding:25px;
+border-radius:15px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+}
+
+.task-time{
+width:120px;
+font-size:24px;
+font-weight:bold;
+color:black;
+}
+
+.task-name{
+flex:1;
+font-size:22px;
+margin-left:30px;
+}
+
+.planner-item button{
+margin-left:10px;
+}
+
+.task-time{
+font-weight:bold;
+color:#007bff;
+width:120px;
+}
+
+.task-name{
+flex:1;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+<h1>📋 My Tasks</h1>
+
+<h3 id="currentDate"></h3>
+
+<p id="currentTime"></p>
+
+</div>
+
+<div class="week-calendar">
+
+<div class="day active-day" onclick="changeDay(event,'Mon')">Mon</div>
+<div class="day" onclick="changeDay(event,'Tue')">Tue</div>
+<div class="day" onclick="changeDay(event,'Wed')">Wed</div>
+<div class="day" onclick="changeDay(event,'Thu')">Thu</div>
+<div class="day" onclick="changeDay(event,'Fri')">Fri</div>
+<div class="day" onclick="changeDay(event,'Sat')">Sat</div>
+<div class="day" onclick="changeDay(event,'Sun')">Sun</div>
+</div>
+
+<button onclick="openTaskForm()">+ Add Task</button>
+<div id="taskForm"
+style="
+display:none;
+background:white;
+padding:20px;
+margin:20px 0;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.1);
+">
+
+<h3>Add New Task</h3>
+
+<input
+type="text"
+id="taskTitle"
+placeholder="Enter Task Title"
+style="width:100%;padding:10px;margin:10px 0;">
+
+<select
+id="taskDay"
+style="width:100%;padding:10px;margin:10px 0;">
+
+<option value="Mon">Monday</option>
+<option value="Tue">Tuesday</option>
+<option value="Wed">Wednesday</option>
+<option value="Thu">Thursday</option>
+<option value="Fri">Friday</option>
+<option value="Sat">Saturday</option>
+<option value="Sun">Sunday</option>
+<option>All Days</option>
+</select>
+
+<select
+id="taskPriority"
+style="width:100%;padding:10px;margin:10px 0;">
+
+<option value="High">High</option>
+<option value="Medium">Medium</option>
+<option value="Low">Low</option>
+
+</select>
+
+<select
+id="taskStatus"
+style="width:100%;padding:10px;margin:10px 0;">
+
+<option value="Pending">Pending</option>
+<option value="Completed">Completed</option>
+
+</select>
+
+<input type="date" id="taskDate"
+style="width:100%;padding:10px;margin:10px 0;">
+</select>
+
+<button onclick="saveTask()">
+Save Task
+</button>
+
+<button onclick="closeTaskForm()">
+Cancel
+</button>
+
+</div>
+<div id="taskList" class="planner-list">
+    
+</div>
+</div>
+
+</div>
+
+<div class="nav">
+<a href="dashboard.html">🏠 Dashboard</a>
+<a href="tasks.html">📋 Tasks</a>
+<a href="calendar.html">📅 Calendar</a>
+<a href="profile.html">👤 Profile</a>
+</div>
+
+<script>
+let currentDay = "Mon";
+function changeDay(event, day){
+
+    currentDay = day;
+
+    loadTasks();
+
+}
+function openTaskForm(){
+    document.getElementById("taskForm").style.display = "block";
+}
+
+function closeTaskForm(){
+    document.getElementById("taskForm").style.display = "none";
+}
+
+async function saveTask(){
+
+    let title = document.getElementById("taskTitle").value;
+    let day_name =document.getElementById("taskDay").value;
+    let priority = document.getElementById("taskPriority").value;
+    let status = document.getElementById("taskStatus").value;
+    let due_date = document.getElementById("taskDate").value;
+
+    const response = await fetch(
+        "http://localhost:3000/addTask",
+        {
+            method:"POST",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+    title,
+    day_name,
+    priority,
+    due_date,
+    status
+})
+        }
+    );
+
+    const result = await response.text();
+
+    alert(result);
+
+    closeTaskForm();
+
+    loadTasks();
+}
+function changeDay(event, day){
+
+
+    currentDay = day;
+
+    document.querySelectorAll(".day").forEach(item=>{
+        item.classList.remove("active-day");
+    });
+
+    event.target.classList.add("active-day");
+
+    loadTasks();
+}
+
+async function loadTasks(){
+
+    const response =
+    await fetch("http://localhost:3000/tasks");
+
+    const tasks =
+    await response.json();
+
+    const taskList =
+    document.getElementById("taskList");
+
+    taskList.innerHTML = "";
+
+    tasks.forEach(task => {
+        taskList.innerHTML += `
+        <div class="task-card">
+
+            <h3>📌 ${task.title}</h3>
+
+            <p>Priority: ${task.priority}</p>
+
+            <p>Status: ${task.status}</p>
+
+            <p>Due: ${new Date(task.due_date).toLocaleDateString("en-GB")}</p>
+
+            <button onclick="editTask(${task.id})">
+            Edit
+            </button>
+
+            <button onclick="deleteTask(${task.id})">
+            Delete
+            </button>
+
+        </div>
+        `;
+});
+}
+
+async function deleteTask(id){
+
+    const response =
+    await fetch(
+        `http://localhost:3000/deleteTask/${id}`,
+        {
+            method:"DELETE"
+        }
+    );
+
+    const result =
+    await response.text();
+
+    alert(result);
+
+    loadTasks();
+}
+
+async function editTask(id){
+
+    let title =
+    prompt("Enter New Task Title");
+
+    if(!title) return;
+
+    const response =
+    await fetch(
+        `http://localhost:3000/updateTask/${id}`,
+        {
+            method:"PUT",
+            headers:{
+                "Content-Type":"application/json"
+            },
+            body:JSON.stringify({
+                title:title,
+                priority:"High",
+                due_date:"2026-09-29",
+                status:"Pending"
+            })
+        }
+    );
+
+    const result =
+    await response.text();
+
+    alert(result);
+
+    loadTasks();
+}
+
+function updateClock(){
+
+    const now = new Date();
+
+    document.getElementById("currentDate").innerHTML =
+    now.toDateString();
+
+    document.getElementById("currentTime").innerHTML =
+    now.toLocaleTimeString();
+}
+
+setInterval(updateClock,1000);
+
+updateClock();
+
+loadTasks();
+
+
+</script>
+
+</body>
+</html>

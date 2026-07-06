@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Progress Tracker</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+}
+
+h1{
+text-align:center;
+margin-bottom:20px;
+}
+
+.cards{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+margin-bottom:30px;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+cursor:pointer;
+transition:0.3s;
+}
+
+.card:hover{
+transform:scale(1.03);
+background:#f0f7ff;
+}
+
+.card h2{
+margin:10px 0;
+color:#007bff;
+}
+
+.chart{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+margin-bottom:30px;
+}
+
+.bar{
+display:flex;
+align-items:center;
+margin:15px 0;
+}
+
+.day{
+width:60px;
+font-weight:bold;
+}
+
+.progress{
+height:25px;
+background:#007bff;
+border-radius:10px;
+color:white;
+padding-left:10px;
+line-height:25px;
+}
+
+.achievements{
+background:white;
+padding:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.bottom-nav{
+position:fixed;
+bottom:0;
+left:0;
+width:100%;
+background:white;
+display:flex;
+justify-content:space-around;
+padding:15px;
+box-shadow:0 -2px 10px rgba(0,0,0,0.1);
+}
+
+.bottom-nav a{
+text-decoration:none;
+font-weight:bold;
+color:black;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>📈 Progress Tracker</h1>
+
+<div class="cards">
+
+<div class="card" onclick="showTasks('total')">
+<h3>📋 Total Tasks</h3>
+<h2 id="totalTasks">0</h2>
+</div>
+
+<div class="card" onclick="showTasks('completed')">
+<h3>✅ Completed</h3>
+<h2 id="completedTasks">0</h2>
+</div>
+
+<div class="card" onclick="showTasks('pending')">
+<h3>⏳ Pending</h3>
+<h2 id="pendingTasks">0</h2>
+</div>
+
+<div class="card" onclick="showTasks('success')">
+<h3>📊 Success Rate</h3>
+<h2 id="successRate">0%</h2>
+</div>
+
+</div>
+
+<div id="taskDetails"
+style="
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+">
+
+<h2>Task Details</h2>
+<p>Click any card above</p>
+
+</div>
+<div class="chart">
+
+<h2>📈 Weekly Progress</h2>
+
+<div class="bar">
+<div class="day">Mon</div>
+<div class="progress" style="width:40%;">4 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Tue</div>
+<div class="progress" style="width:30%;">3 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Wed</div>
+<div class="progress" style="width:50%;">5 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Thu</div>
+<div class="progress" style="width:20%;">2 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Fri</div>
+<div class="progress" style="width:40%;">4 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Sat</div>
+<div class="progress" style="width:60%;">6 Tasks</div>
+</div>
+
+<div class="bar">
+<div class="day">Sun</div>
+<div class="progress" style="width:30%;">3 Tasks</div>
+</div>
+</div>
+
+<div class="achievements">
+
+<h2>🏆 Achievements</h2>
+
+<p>🔥 Current Streak : 5 Days</p>
+
+<p>⭐ Completed 25 Tasks</p>
+
+<p>🏆 Best Day : Saturday</p>
+
+<p>🌟 Small Progress Every Day Leads to Big Success!</p>
+
+</div>
+
+<div class="bottom-nav">
+
+<a href="dashboard.html">🏠 Dashboard</a>
+
+<a href="tasks.html">📋 Tasks</a>
+
+<a href="calendar.html">📅 Calendar</a>
+
+<a href="progress.html">📈 Progress</a>
+
+</div>
+<script>
+
+let allTasks =
+JSON.parse(localStorage.getItem("allTasks"))
+|| {};
+
+let total = 0;
+
+for(let day in allTasks){
+
+total += allTasks[day].length;
+
+}
+
+let completed = Math.floor(total * 0.7);
+
+let pending = total - completed;
+
+let rate = total > 0
+? Math.round((completed/total)*100)
+: 0;
+
+document.getElementById("totalTasks").innerHTML = total;
+document.getElementById("completedTasks").innerHTML = completed;
+document.getElementById("pendingTasks").innerHTML = pending;
+document.getElementById("successRate").innerHTML = rate + "%";
+
+
+function showTasks(type){
+
+let html = "";
+
+if(type==="total"){
+
+let taskList = "";
+
+for(let day in allTasks){
+allTasks[day].forEach(task => {
+taskList += `<p>📌 ${task}</p>`;
+});
+}
+
+html = `
+<h2>📋 Total Tasks</h2>
+${taskList}
+`;
+
+}
+
+else if(type==="completed"){
+
+html = `
+<h2>✅ Completed Tasks</h2>
+<p>Completed Tasks : ${completed}</p>
+`;
+
+}
+
+else if(type==="pending"){
+
+let taskList = "";
+
+for(let day in allTasks){
+allTasks[day].forEach(task => {
+taskList += `<p>⏳ ${task}</p>`;
+});
+}
+
+html = `
+<h2>⏳ Pending Tasks</h2>
+${taskList}
+`;
+
+}
+
+else if(type==="success"){
+
+html = `
+<h2>📊 Success Rate</h2>
+<p>Success Rate : ${rate}%</p>
+`;
+
+}
+
+document.getElementById("taskDetails").innerHTML = html;
+
+}
+</script>
+
+</body>
+
+</html>
+

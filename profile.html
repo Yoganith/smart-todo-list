@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Profile</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f7fb;
+padding:20px;
+}
+
+.profile-card{
+max-width:800px;
+margin:auto;
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.profile-header{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+text-align:center;
+}
+
+.profile-img{
+width:120px;
+height:120px;
+border-radius:50%;
+background:#007bff;
+margin:auto;
+margin-bottom:15px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:50px;
+font-weight:bold;
+color:white;
+}
+
+.section{
+margin-top:25px;
+padding:15px;
+background:#f9f9f9;
+border-radius:10px;
+}
+
+.section h3{
+color:#007bff;
+}
+
+.badge{
+display:inline-block;
+padding:8px 15px;
+margin:5px;
+background:#007bff;
+color:white;
+border-radius:20px;
+}
+
+button{
+padding:10px 15px;
+border:none;
+background:#007bff;
+color:white;
+border-radius:5px;
+cursor:pointer;
+margin:5px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="profile-card">
+
+<div class="profile-header">
+<div class="profile-img" id="profileImg">U</div>
+<h2 id="profileName">User</h2>
+<p>Smart To-Do User</p>
+
+<button onclick="changeName()">
+Edit Name
+</button>
+
+</div>
+
+<div class="section">
+
+<h3>📊 Productivity Summary</h3>
+
+<p>Total Tasks: <span id="totalTasks2">0</span></p>
+
+<p>Completed Tasks: <span id="completedTasks2">0</span></p>
+
+<p>Pending Tasks: <span id="pendingTasks2">0</span></p>
+
+<p>Success Rate: <span id="successRate2">0%</span></p>
+
+</div>
+
+<div class="section">
+
+<h3>📅 Activity Statistics</h3>
+
+<p>🔥 Current Streak: 5 Days</p>
+
+<p>⭐ Tasks This Week: <span id="weekTasks">0</span></p>
+
+<p>🏆 Most Productive Day: Monday</p>
+
+<p>📍 Last Login: Today</p>
+
+</div>
+
+
+<div class="section">
+
+<h3>🎯 Productivity Goals</h3>
+
+<p>✅ Complete all daily tasks</p>
+
+<p>🔥 Maintain a 7-day streak</p>
+
+<p>⭐ Complete 50 tasks</p>
+
+<p>🚀 Improve productivity every day</p>
+
+</div>
+<div class="section">
+
+<h3>📈 Live Statistics</h3>
+
+<p>Total Tasks: <span id="totalTasks2">0</span></p>
+
+<p>Completed Tasks: <span id="completedTasks2">0</span></p>
+
+<p>Pending Tasks: <span id="pendingTasks2">0</span></p>
+
+<p>Success Rate: <span id="successRate2">0%</span></p>
+
+<p>Tasks This Week: <span id="weekTasks">0</span></p>
+
+</div>
+</div>
+</div>
+
+<div style="text-align:center;margin-top:20px;">
+
+<button>Edit Profile</button>
+
+<button>Download Report</button>
+
+<button>Share Progress</button>
+
+</div>
+
+</div>
+
+<script>
+
+let allTasks =
+JSON.parse(localStorage.getItem("allTasks"))
+|| {};
+
+let total = 0;
+
+for(let day in allTasks){
+total += allTasks[day].length;
+}
+
+let completed = Math.floor(total * 0.7);
+
+let rate = total > 0
+? Math.round((completed/total)*100)
+: 0;
+let pending = total - completed;
+
+document.getElementById("totalTasks").innerHTML = total;
+
+document.getElementById("completedTasks").innerHTML = completed;
+
+document.getElementById("successRate").innerHTML = rate + "%";
+document.getElementById("totalTasks2").innerHTML = total;
+
+document.getElementById("completedTasks2").innerHTML = completed;
+
+document.getElementById("pendingTasks2").innerHTML = pending;
+
+document.getElementById("successRate2").innerHTML = rate + "%";
+
+document.getElementById("weekTasks").innerHTML = total;
+document.getElementById("weekTasks").innerHTML = total;
+document.getElementById("totalTasks2").innerHTML = total;
+document.getElementById("completedTasks2").innerHTML = completed;
+document.getElementById("pendingTasks2").innerHTML = pending;
+document.getElementById("successRate2").innerHTML = rate + "%";
+document.getElementById("weekTasks").innerHTML = total;
+
+document.getElementById("weekTasks").innerHTML = total;
+
+
+// PASTE BELOW THIS LINE
+
+let userName =
+localStorage.getItem("userName")
+|| "User";
+
+document.getElementById("profileName").innerHTML = userName;
+
+document.getElementById("profileImg").innerHTML =
+userName.charAt(0).toUpperCase();
+
+function changeName(){
+
+let newName =
+prompt("Enter Your Name");
+
+if(newName){
+
+localStorage.setItem(
+"userName",
+newName
+);
+
+document.getElementById("profileName").innerHTML =
+newName;
+
+document.getElementById("profileImg").innerHTML =
+newName.charAt(0).toUpperCase();
+
+}
+
+}
+
+// PASTE ABOVE THIS LINE
+
+</script>
+</script>
+
+</body>
+</html>

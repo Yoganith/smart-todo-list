@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart To-Do Login</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+
+<div class="login-page">
+
+<div class="login-card">
+
+<h1>📝 Smart To-Do Tracker</h1>
+
+<p class="subtitle">
+Stay Organized. Stay Productive.
+</p>
+
+<input
+type="email"
+id="email"
+placeholder="Enter Email">
+
+<input
+type="password"
+id="password"
+placeholder="Enter Password">
+
+<a href="#">
+Forgot Password?
+</a>
+
+<button onclick="login()">
+Login
+</button>
+
+<button class="register-btn">
+Register
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+const email =
+document.getElementById("email").value;
+
+const password =
+document.getElementById("password").value;
+
+if(email === "" || password === ""){
+
+alert("Please enter email and password");
+
+return;
+
+}
+
+window.location.href =
+"dashboard.html";
+
+}
+
+</script>
+
+</body>
+
+</html>
