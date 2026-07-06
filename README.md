@@ -1,26 +1,8 @@
-## 📸 Screenshots
-
-### Login Page
-
-![Login](images/login.png)
-
-### Dashboard
-
-![Dashboard](images/dashboard.png)
-
-### Calendar
-
-![Calendar](images/calendar.png)
-
-### Progress Dashboard
-
-![Progress](images/progress.png)
-
 # 📋 Smart To-Do List
 
 ## 📖 About the Project
 
-Smart To-Do List is a full-stack web application that helps users manage their daily tasks efficiently. It allows users to add, edit, delete, and organize tasks through a simple and user-friendly interface.
+Smart To-Do List is a full-stack web application that helps users manage daily tasks efficiently. It allows users to add, edit, delete, and organize tasks through a simple and user-friendly interface.
 
 ## ✨ Features
 
